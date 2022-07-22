@@ -17,16 +17,16 @@ export abstract class HttpServlet {
         this[target](req, res)
     }
 
-    public doGet(req: IncomingMessage, res: ServerResponse) {
+    protected doGet(req: IncomingMessage, res: ServerResponse) {
         throw errorFromRequest(req, Forbidden)
     }
-    public doPost(req: IncomingMessage, res: ServerResponse) {
+    protected doPost(req: IncomingMessage, res: ServerResponse) {
         throw errorFromRequest(req, Forbidden)
     }
-    public doPut(req: IncomingMessage, res: ServerResponse) {
+    protected doPut(req: IncomingMessage, res: ServerResponse) {
         throw errorFromRequest(req, Forbidden)
     }
-    public doDelete(req: IncomingMessage, res: ServerResponse) {
+    protected doDelete(req: IncomingMessage, res: ServerResponse) {
         throw errorFromRequest(req, Forbidden)
     }
 }

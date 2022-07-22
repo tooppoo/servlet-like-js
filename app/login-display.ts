@@ -3,7 +3,7 @@ import { IncomingMessage, ServerResponse } from "node:http"
 import {getRequestDispatcher, RequestDispatcher} from "@servlet/dispatcher";
 
 export class LoginDisplayServlet extends HttpServlet {
-    doGet(req: IncomingMessage, res: ServerResponse) {
+    protected doGet(req: IncomingMessage, res: ServerResponse) {
         getRequestDispatcher(loginDisplayDispatcher, []).forward(req, res)
     }
 }
