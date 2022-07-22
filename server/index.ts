@@ -17,7 +17,7 @@ async function main() {
 
             res.setHeader('Content-Type', "text/html;charset=utf-8")
 
-            const map = web.mappingDom.find(dom => dom.urlPattern === url.path)
+            const map = web.mappingDom.find(dom => dom.urlPattern === url.pathname)
             if (map === undefined) return handleError(new NotFound(`NotFound ${req.url}`), res)
 
             const servlet = web.servletDom.find(d => d.servletName === map.servletName)
