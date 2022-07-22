@@ -1,6 +1,22 @@
 import { IncomingMessage, ServerResponse } from 'http'
+import {BaseError} from "./error";
+
+export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
+
+function httpMethod2ServletMethod<T extends Method>(method: T): `do${Capitalize<Lowercase<T>>}` {
+    const [h, ...rest] = method
+    const body = `${h.toUpperCase()}${rest.join('').toLowerCase()}` as Capitalize<Lowercase<T>>
+
+    return `do${body}`
+}
 
 export abstract class HttpServlet {
+    public handle(method: 'GET' | 'POST' | 'PUT' | 'DELETE', req: IncomingMessage, res: ServerResponse) {
+        const target = httpMethod2ServletMethod(method)
+
+        this[target](req, res)
+    }
+
     public doGet(req: IncomingMessage, res: ServerResponse) {
         throw errorFromRequest(req, Forbidden)
     }
@@ -20,21 +36,8 @@ const errorFromRequest = (
     err: new (msg: string) => ServletError
 ) => new err(`${err.name} "${req.method} ${req.url}`)
 
-export abstract class ServletError extends Error {
+export abstract class ServletError extends BaseError {
     abstract readonly statusCode: number
-
-    constructor(message: string) {
-        super(message);
-
-        Object.defineProperty(this, 'name', {
-            configurable: true,
-            enumerable: false,
-            value: this.constructor.name,
-            writable: true,
-        });
-
-        Error.captureStackTrace(this, this.constructor);
-    }
 }
 
 export class NotFound extends ServletError {
