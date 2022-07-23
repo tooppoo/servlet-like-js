@@ -10,6 +10,7 @@ export function applyHttpResponse(res: ServerResponse): HttpResponse {
             res.writeHead(302, {
                 Location: path,
             })
+            res.end()
         }
     })
 }
