@@ -12,8 +12,9 @@ export interface HttpRequest extends IncomingMessage {
     readonly requestURL: URL
 
     readonly attributes: object
-
     setAttribute(name: string, value: unknown): void
+
+    getParameter(name: string): string
 
     getRequestDispatcher(viewPath: string): RequestDispatcher
 }
@@ -36,7 +37,7 @@ class RequestDispatcher {
 }
 
 export const applyHttpRequest = (url: URL) => (req: IncomingMessage): HttpRequest => {
-    let data = {}
+    let data = {} as { [key: string]: string }
     req.on('data', chunk => {
         data = JSON.parse(chunk)
     })
@@ -62,6 +63,9 @@ export const applyHttpRequest = (url: URL) => (req: IncomingMessage): HttpReques
         },
         setAttribute(name: string, value: unknown) {
             attributes[name] = value
+        },
+        getParameter(name: string): string {
+            return this.params.data[name]
         }
     })
 }
