@@ -2,7 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http'
 import * as path from "path"
 
 import {Renderer} from "@servlet/renderer";
-import {InternalServerError} from "@servlet/http-servlet";
+import {InternalServerError} from "@servlet/error";
 
 export interface HttpRequest extends IncomingMessage {
     readonly params: {

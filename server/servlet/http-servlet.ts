@@ -1,4 +1,4 @@
-import {BaseError} from "./error";
+import {Forbidden, ServletError} from "./error";
 import {HttpRequest} from "@servlet/request";
 import {HttpResponse} from "@servlet/response";
 
@@ -37,17 +37,3 @@ const errorFromRequest = (
     err: new (msg: string) => ServletError
 ) => new err(`${err.name} ${req.method} ${req.url}`)
 
-export abstract class ServletError extends BaseError {
-    abstract readonly statusCode: number
-}
-
-export class NotFound extends ServletError {
-    readonly statusCode = 404
-}
-export class Forbidden extends ServletError {
-    readonly statusCode = 403
-}
-
-export class InternalServerError extends ServletError {
-    readonly statusCode = 500
-}

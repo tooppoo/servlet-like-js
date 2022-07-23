@@ -1,9 +1,10 @@
 import {WebXml} from "@servlet/web";
-import {Method, NotFound} from "@servlet/http-servlet";
+import {Method} from "@servlet/http-servlet";
 import {applyHttpRequest} from "@servlet/request";
 import {IncomingMessage, ServerResponse } from "node:http";
 import {UrlFromRequest} from "@servlet/url";
 import {applyHttpResponse} from "@servlet/response";
+import {NotFound} from "@servlet/error";
 
 export class Router {
     constructor(

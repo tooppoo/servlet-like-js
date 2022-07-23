@@ -1,9 +1,9 @@
 import { createServer, ServerResponse } from 'http'
 
 import { readWebXml } from "@servlet/web"
-import { ServletError } from "@servlet/http-servlet"
 import {buildUrlFromRequest} from "@servlet/url";
 import {Router} from "@servlet/router";
+import {ServletError} from "@servlet/error";
 
 const port = 9090
 const enc = 'utf-8'
