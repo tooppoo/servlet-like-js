@@ -1,3 +1,4 @@
+import { IncomingMessage } from "http";
 
 export class BaseError extends Error {
     constructor(message: string) {
@@ -25,3 +26,8 @@ export class NotFound extends ServletError {
 export class InternalServerError extends ServletError {
     readonly statusCode = 500
 }
+
+export const errorFromRequest = (
+    req: IncomingMessage,
+    err: new (msg: string) => ServletError
+) => new err(`${err.name} ${req.method} ${req.url}`)

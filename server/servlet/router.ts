@@ -4,7 +4,7 @@ import {applyHttpRequest} from "@servlet/request";
 import {IncomingMessage, ServerResponse } from "node:http";
 import {UrlFromRequest} from "@servlet/url";
 import {applyHttpResponse} from "@servlet/response";
-import {NotFound} from "@servlet/error";
+import {errorFromRequest, NotFound} from "@servlet/error";
 
 export class Router {
     constructor(
@@ -16,10 +16,10 @@ export class Router {
         const url = this.urlFromRequest(req)
 
         const map = this.webXml.mappingDom.find(dom => dom.urlPattern === url.pathname)
-        if (map === undefined) throw new NotFound(`NotFound ${req.url}`)
+        if (map === undefined) throw errorFromRequest(req, NotFound)
 
         const servlet = this.webXml.servletDom.find(d => d.servletName === map.servletName)
-        if (servlet === undefined) throw new NotFound(`NotFound ${req.url}`)
+        if (servlet === undefined) throw errorFromRequest(req, NotFound)
 
         const servletInstance = await servlet.servletClass
 

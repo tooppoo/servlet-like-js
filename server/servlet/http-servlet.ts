@@ -1,4 +1,4 @@
-import {NotFound, ServletError} from "./error";
+import {errorFromRequest, NotFound} from "./error";
 import {HttpRequest} from "@servlet/request";
 import {HttpResponse} from "@servlet/response";
 
@@ -31,9 +31,4 @@ export abstract class HttpServlet {
         throw errorFromRequest(req, NotFound)
     }
 }
-
-const errorFromRequest = (
-    req: HttpRequest,
-    err: new (msg: string) => ServletError
-) => new err(`${err.name} ${req.method} ${req.url}`)
 
