@@ -4,8 +4,24 @@
         <servlet-name>LoginDisplay</servlet-name>
         <servlet-class>login-display.ts#LoginDisplayServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoginProcess</servlet-name>
+        <servlet-class>login-process.ts#LoginProcessServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListDisplay</servlet-name>
+        <servlet-class>list-display#ListDisplayServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginDisplay</servlet-name>
         <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginProcess</servlet-name>
+        <url-pattern>/login-process</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListDisplay</servlet-name>
+        <url-pattern>/list</url-pattern>
     </servlet-mapping>
 </web-app>
