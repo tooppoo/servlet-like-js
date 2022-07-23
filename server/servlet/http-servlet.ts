@@ -18,16 +18,16 @@ export abstract class HttpServlet {
         return this[target](req, res)
     }
 
-    protected async doGet(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    protected async doGet(req: HttpRequest, res: ServerResponse): Promise<void> {
         throw errorFromRequest(req, Forbidden)
     }
-    protected async doPost(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    protected async doPost(req: HttpRequest, res: ServerResponse): Promise<void> {
         throw errorFromRequest(req, Forbidden)
     }
-    protected async doPut(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    protected async doPut(req: HttpRequest, res: ServerResponse): Promise<void> {
         throw errorFromRequest(req, Forbidden)
     }
-    protected async doDelete(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    protected async doDelete(req: HttpRequest, res: ServerResponse): Promise<void> {
         throw errorFromRequest(req, Forbidden)
     }
 }
@@ -35,7 +35,7 @@ export abstract class HttpServlet {
 const errorFromRequest = (
     req: IncomingMessage,
     err: new (msg: string) => ServletError
-) => new err(`${err.name} "${req.method} ${req.url}`)
+) => new err(`${err.name} ${req.method} ${req.url}`)
 
 export abstract class ServletError extends BaseError {
     abstract readonly statusCode: number
