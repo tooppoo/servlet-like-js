@@ -9,12 +9,12 @@ export const login: Renderer<LoginAttr> = attr => `
 <div class="error">
     ${attr.errorMessage || ''}
 </div>
-<form>
+<form method="POST" action="login-process">
     <div>
-        ID: <input id="user_id">
+        ID: <input name="loginId" type="text">
     </div>
     <div>
-        パスワード: <input id="password" type="password">
+        パスワード: <input name="password" type="password">
     </div>
     <div>
         <button type="submit">ログイン</button>

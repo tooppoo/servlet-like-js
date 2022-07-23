@@ -24,7 +24,7 @@ export class Router {
 
         return await servletInstance.handle(
             req.method as Method,
-            applyHttpRequest(url)(req),
+            await applyHttpRequest(url)(req),
             applyHttpResponse(res)
         )
     }

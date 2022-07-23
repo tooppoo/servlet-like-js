@@ -1,5 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'http'
 import * as path from "path"
+
 import {Renderer} from "@servlet/renderer";
 import {InternalServerError} from "@servlet/http-servlet";
 
@@ -38,10 +39,18 @@ class RequestDispatcher {
     }
 }
 
-export const applyHttpRequest = (url: URL) => (req: IncomingMessage): HttpRequest => {
-    let data = {} as { [key: string]: string }
-    req.on('data', chunk => {
-        data = JSON.parse(chunk)
+export const applyHttpRequest = (url: URL) => async (req: IncomingMessage): Promise<HttpRequest> => {
+    const data = await new Promise<{ [key: string]: string }>((resolve) => {
+        let data = {} as { [key: string]: string }
+
+        req.on('data', chunk => {
+            new URLSearchParams(chunk).forEach((val, key) => {
+                console.debug({ key, val })
+                data[key] = val
+            })
+
+            resolve(data)
+        })
     })
 
     let attributes = {} as { [key: string]: unknown }
@@ -50,6 +59,7 @@ export const applyHttpRequest = (url: URL) => (req: IncomingMessage): HttpReques
         params: {
             query: url.searchParams,
             get data() {
+                console.debug({ data })
                 return data
             },
         },
