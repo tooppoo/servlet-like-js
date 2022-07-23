@@ -41,11 +41,20 @@ class RequestDispatcher {
 
 export const applyHttpRequest = (url: URL) => async (req: IncomingMessage): Promise<HttpRequest> => {
     const data = await new Promise<{ [key: string]: string }>((resolve) => {
+        if (
+            !(req.method === 'POST'
+            || req.method === 'PUT'
+            || req.method === 'PATCH')
+        ) {
+            resolve({})
+
+            return
+        }
+
         let data = {} as { [key: string]: string }
 
         req.on('data', chunk => {
             new URLSearchParams(chunk).forEach((val, key) => {
-                console.debug({ key, val })
                 data[key] = val
             })
 
@@ -59,7 +68,6 @@ export const applyHttpRequest = (url: URL) => async (req: IncomingMessage): Prom
         params: {
             query: url.searchParams,
             get data() {
-                console.debug({ data })
                 return data
             },
         },
