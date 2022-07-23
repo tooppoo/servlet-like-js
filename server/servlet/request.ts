@@ -14,7 +14,7 @@ export interface HttpRequest extends IncomingMessage {
     readonly attributes: object
     setAttribute(name: string, value: unknown): void
 
-    getParameter(name: string): string
+    getParameter(name: string): string | null
 
     getRequestDispatcher(viewPath: string): RequestDispatcher
 }
@@ -64,8 +64,8 @@ export const applyHttpRequest = (url: URL) => (req: IncomingMessage): HttpReques
         setAttribute(name: string, value: unknown) {
             attributes[name] = value
         },
-        getParameter(name: string): string {
-            return this.params.data[name]
+        getParameter(name: string): string | null {
+            return this.params.data[name] || null
         }
     })
 }
