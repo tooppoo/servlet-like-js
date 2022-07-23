@@ -29,6 +29,8 @@ export class Router {
 
         const servletInstance = await servlet.servletClass
 
+        await servletInstance.init()
+
         return await servletInstance.handle(
             req.method as Method,
             await applyHttpRequest(url)(req),

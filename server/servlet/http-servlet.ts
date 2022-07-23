@@ -12,6 +12,10 @@ function httpMethod2ServletMethod<T extends Method>(method: T): `do${Capitalize<
 }
 
 export abstract class HttpServlet {
+    public async init(): Promise<void> {
+        // hook method
+    }
+
     public handle(method: 'GET' | 'POST' | 'PUT' | 'DELETE', req: HttpRequest, res: HttpResponse): Promise<void> {
         const target = httpMethod2ServletMethod(method)
 
