@@ -1,4 +1,4 @@
-import {ClassLoader} from "../util/class-loader";
+import {ClassLoader} from "@util/class-loader";
 import * as path from "path";
 
 const root = path.resolve(__dirname, '..', '..')
