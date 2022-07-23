@@ -1,19 +1,20 @@
 import { branch } from "ceiocs"
 import { createServer, ServerResponse } from 'http'
-import parseUrl from 'parseurl'
 
 import { readWebXml } from "@servlet/web"
 import { Method, NotFound, ServletError } from "@servlet/http-servlet"
+import {buildUrlFromRequest} from "@servlet/url";
+import {applyHttpRequest} from "@servlet/request";
 
 const port = 9090
+const urlFromRequest = buildUrlFromRequest('http')
 
 async function main() {
     const web = await readWebXml()
 
     const server = createServer(async (req, res) => {
         try {
-            const url = parseUrl(req)
-            if (url === undefined) return
+            const url = urlFromRequest(req)
 
             res.setHeader('Content-Type', "text/html;charset=utf-8")
 
@@ -24,7 +25,11 @@ async function main() {
             if (servlet === undefined) return handleError(new NotFound(`NotFound ${req.url}`), res)
 
             const servletInstance = await servlet.servletClass
-            servletInstance.handle(req.method as Method, req, res)
+            servletInstance.handle(
+                req.method as Method,
+                applyHttpRequest(url)(req),
+                res
+            )
         } catch (error) {
             if (error instanceof Error) {
                 handleError(error, res)

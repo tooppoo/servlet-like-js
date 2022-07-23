@@ -1,5 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'http'
 import {BaseError} from "./error";
+import {HttpRequest} from "@servlet/request";
 
 export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
@@ -11,7 +12,7 @@ function httpMethod2ServletMethod<T extends Method>(method: T): `do${Capitalize<
 }
 
 export abstract class HttpServlet {
-    public handle(method: 'GET' | 'POST' | 'PUT' | 'DELETE', req: IncomingMessage, res: ServerResponse) {
+    public handle(method: 'GET' | 'POST' | 'PUT' | 'DELETE', req: HttpRequest, res: ServerResponse) {
         const target = httpMethod2ServletMethod(method)
 
         this[target](req, res)
