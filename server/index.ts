@@ -1,4 +1,3 @@
-import { branch } from "ceiocs"
 import { createServer, ServerResponse } from 'http'
 
 import { readWebXml } from "@servlet/web"
@@ -7,6 +6,7 @@ import {buildUrlFromRequest} from "@servlet/url";
 import {applyHttpRequest} from "@servlet/request";
 
 const port = 9090
+const enc = 'utf-8'
 const urlFromRequest = buildUrlFromRequest('http')
 
 async function main() {
@@ -16,7 +16,8 @@ async function main() {
         try {
             const url = urlFromRequest(req)
 
-            res.setHeader('Content-Type', "text/html;charset=utf-8")
+            req.setEncoding(enc)
+            res.setHeader('Content-Type', `text/html;charset=${enc}`)
 
             const map = web.mappingDom.find(dom => dom.urlPattern === url.pathname)
             if (map === undefined) return handleError(new NotFound(`NotFound ${req.url}`), res)
@@ -25,7 +26,8 @@ async function main() {
             if (servlet === undefined) return handleError(new NotFound(`NotFound ${req.url}`), res)
 
             const servletInstance = await servlet.servletClass
-            servletInstance.handle(
+
+            await servletInstance.handle(
                 req.method as Method,
                 applyHttpRequest(url)(req),
                 res
@@ -45,9 +47,9 @@ async function main() {
 }
 
 function handleError(error: Error, res: ServerResponse) {
-    const statusCode = branch
-        .if<number>(error instanceof ServletError, (error as ServletError).statusCode)
-        .else(500)
+    const statusCode = error instanceof ServletError
+        ? error.statusCode
+        : 500
 
     res.writeHead(statusCode)
     res.end(`

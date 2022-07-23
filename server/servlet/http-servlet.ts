@@ -12,22 +12,22 @@ function httpMethod2ServletMethod<T extends Method>(method: T): `do${Capitalize<
 }
 
 export abstract class HttpServlet {
-    public handle(method: 'GET' | 'POST' | 'PUT' | 'DELETE', req: HttpRequest, res: ServerResponse) {
+    public handle(method: 'GET' | 'POST' | 'PUT' | 'DELETE', req: HttpRequest, res: ServerResponse): Promise<void> {
         const target = httpMethod2ServletMethod(method)
 
-        this[target](req, res)
+        return this[target](req, res)
     }
 
-    protected doGet(req: IncomingMessage, res: ServerResponse) {
+    protected async doGet(req: IncomingMessage, res: ServerResponse): Promise<void> {
         throw errorFromRequest(req, Forbidden)
     }
-    protected doPost(req: IncomingMessage, res: ServerResponse) {
+    protected async doPost(req: IncomingMessage, res: ServerResponse): Promise<void> {
         throw errorFromRequest(req, Forbidden)
     }
-    protected doPut(req: IncomingMessage, res: ServerResponse) {
+    protected async doPut(req: IncomingMessage, res: ServerResponse): Promise<void> {
         throw errorFromRequest(req, Forbidden)
     }
-    protected doDelete(req: IncomingMessage, res: ServerResponse) {
+    protected async doDelete(req: IncomingMessage, res: ServerResponse): Promise<void> {
         throw errorFromRequest(req, Forbidden)
     }
 }
@@ -46,4 +46,8 @@ export class NotFound extends ServletError {
 }
 export class Forbidden extends ServletError {
     readonly statusCode = 403
+}
+
+export class InternalServerError extends ServletError {
+    readonly statusCode = 500
 }
