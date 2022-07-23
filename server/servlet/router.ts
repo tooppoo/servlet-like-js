@@ -3,6 +3,7 @@ import {Method, NotFound} from "@servlet/http-servlet";
 import {applyHttpRequest} from "@servlet/request";
 import {IncomingMessage, ServerResponse } from "node:http";
 import {UrlFromRequest} from "@servlet/url";
+import {applyHttpResponse} from "@servlet/response";
 
 export class Router {
     constructor(
@@ -24,7 +25,7 @@ export class Router {
         return await servletInstance.handle(
             req.method as Method,
             applyHttpRequest(url)(req),
-            res
+            applyHttpResponse(res)
         )
     }
 }

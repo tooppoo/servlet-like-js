@@ -1,9 +1,9 @@
 import { HttpServlet } from "@servlet/http-servlet"
-import { ServerResponse } from "node:http"
 import {HttpRequest} from "@servlet/request";
+import {HttpResponse} from "@servlet/response";
 
 export class LoginDisplayServlet extends HttpServlet {
-    protected doGet(req: HttpRequest, res: ServerResponse): Promise<void> {
+    protected doGet(req: HttpRequest, res: HttpResponse): Promise<void> {
         return req.getRequestDispatcher('login.ts#login').forward(req, res)
     }
 }

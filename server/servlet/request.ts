@@ -17,6 +17,8 @@ export interface HttpRequest extends IncomingMessage {
     getParameter(name: string): string | null
 
     getRequestDispatcher(viewPath: string): RequestDispatcher
+
+    getContextPath(): string
 }
 class RequestDispatcher {
     constructor(
@@ -66,6 +68,9 @@ export const applyHttpRequest = (url: URL) => (req: IncomingMessage): HttpReques
         },
         getParameter(name: string): string | null {
             return this.params.data[name] || null
+        },
+        getContextPath(): string {
+            return '' // context設定も使う場合は再実装
         }
     })
 }
