@@ -6,7 +6,11 @@ import { DOMParser } from 'xmldom'
 import {BaseError} from "./error";
 import {HttpServlet} from "./http-servlet";
 
-export async function readWebXml() {
+export interface WebXml {
+    servletDom: ServletDom[]
+    mappingDom: ServletMappingDom[]
+}
+export async function readWebXml(): Promise<WebXml> {
     const configPath = path.resolve(__dirname, '..', '..', 'config')
 
     const buf = await readFile(path.resolve(configPath, 'web.xml'))

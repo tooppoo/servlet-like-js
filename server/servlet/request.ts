@@ -9,6 +9,8 @@ export interface HttpRequest extends IncomingMessage {
         data: object
     }
 
+    readonly requestURL: URL
+
     readonly attributes: object
 
     setAttribute(name: string, value: unknown): void
@@ -23,10 +25,10 @@ class RequestDispatcher {
 
     async forward(req: HttpRequest, res: ServerResponse): Promise<void> {
         const rendererMap = await this.load
-        const r = rendererMap[this.rendererName]
+        const render = rendererMap[this.rendererName]
 
-        if (r !== undefined) {
-            res.end(r(req.attributes))
+        if (render !== undefined) {
+            res.end(render(req.attributes))
         } else {
             throw new InternalServerError(`not found renderer for ${this.rendererName}`)
         }
@@ -48,6 +50,7 @@ export const applyHttpRequest = (url: URL) => (req: IncomingMessage): HttpReques
                 return data
             },
         },
+        requestURL: url,
         getRequestDispatcher(ref: string) {
             const [viewPath, name] = ref.split('#')
             const targetPath = path.resolve(__dirname, '..', '..', 'view', viewPath)

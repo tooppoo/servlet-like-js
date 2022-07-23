@@ -1,9 +1,9 @@
 import { createServer, ServerResponse } from 'http'
 
 import { readWebXml } from "@servlet/web"
-import { Method, NotFound, ServletError } from "@servlet/http-servlet"
+import { ServletError } from "@servlet/http-servlet"
 import {buildUrlFromRequest} from "@servlet/url";
-import {applyHttpRequest} from "@servlet/request";
+import {Router} from "@servlet/router";
 
 const port = 9090
 const enc = 'utf-8'
@@ -11,27 +11,14 @@ const urlFromRequest = buildUrlFromRequest('http')
 
 async function main() {
     const web = await readWebXml()
+    const router = new Router(web, urlFromRequest)
 
     const server = createServer(async (req, res) => {
         try {
-            const url = urlFromRequest(req)
-
             req.setEncoding(enc)
             res.setHeader('Content-Type', `text/html;charset=${enc}`)
 
-            const map = web.mappingDom.find(dom => dom.urlPattern === url.pathname)
-            if (map === undefined) return handleError(new NotFound(`NotFound ${req.url}`), res)
-
-            const servlet = web.servletDom.find(d => d.servletName === map.servletName)
-            if (servlet === undefined) return handleError(new NotFound(`NotFound ${req.url}`), res)
-
-            const servletInstance = await servlet.servletClass
-
-            await servletInstance.handle(
-                req.method as Method,
-                applyHttpRequest(url)(req),
-                res
-            )
+            await router.route(req, res)
         } catch (error) {
             if (error instanceof Error) {
                 handleError(error, res)
