@@ -1,7 +1,7 @@
 import { IncomingMessage } from "http";
 
 export class BaseError extends Error {
-    constructor(message: string) {
+    constructor(message?: string) {
         super(message);
 
         Object.defineProperty(this, 'name', {
@@ -17,6 +17,10 @@ export class BaseError extends Error {
 
 export abstract class ServletError extends BaseError {
     abstract readonly statusCode: number
+
+    constructor(message?: string) {
+        super(message);
+    }
 }
 
 export class NotFound extends ServletError {
