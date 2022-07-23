@@ -1,7 +1,14 @@
 import {Renderer} from "@servlet/renderer";
 
-export const login: Renderer<void> = () => `
+interface LoginAttr {
+    errorMessage?: string
+}
+
+export const login: Renderer<LoginAttr> = attr => `
 <h1>Login</h1>
+<div class="error">
+    ${attr.errorMessage || ''}
+</div>
 <form>
     <div>
         ID: <input id="user_id">
