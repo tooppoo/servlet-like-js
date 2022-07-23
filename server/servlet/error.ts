@@ -22,10 +22,6 @@ export class NotFound extends ServletError {
     readonly statusCode = 404
 }
 
-export class Forbidden extends ServletError {
-    readonly statusCode = 403
-}
-
 export class InternalServerError extends ServletError {
     readonly statusCode = 500
 }

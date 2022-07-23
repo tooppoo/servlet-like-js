@@ -1,4 +1,4 @@
-import {Forbidden, ServletError} from "./error";
+import {NotFound, ServletError} from "./error";
 import {HttpRequest} from "@servlet/request";
 import {HttpResponse} from "@servlet/response";
 
@@ -19,16 +19,16 @@ export abstract class HttpServlet {
     }
 
     protected async doGet(req: HttpRequest, res: HttpResponse): Promise<void> {
-        throw errorFromRequest(req, Forbidden)
+        throw errorFromRequest(req, NotFound)
     }
     protected async doPost(req: HttpRequest, res: HttpResponse): Promise<void> {
-        throw errorFromRequest(req, Forbidden)
+        throw errorFromRequest(req, NotFound)
     }
     protected async doPut(req: HttpRequest, res: HttpResponse): Promise<void> {
-        throw errorFromRequest(req, Forbidden)
+        throw errorFromRequest(req, NotFound)
     }
     protected async doDelete(req: HttpRequest, res: HttpResponse): Promise<void> {
-        throw errorFromRequest(req, Forbidden)
+        throw errorFromRequest(req, NotFound)
     }
 }
 
