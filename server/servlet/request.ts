@@ -10,8 +10,6 @@ export interface HttpRequest extends IncomingMessage {
         data: object
     }
 
-    readonly requestURL: URL
-
     readonly attributes: object
     setAttribute(name: string, value: unknown): void
 
@@ -20,6 +18,8 @@ export interface HttpRequest extends IncomingMessage {
     getRequestDispatcher(viewPath: string): RequestDispatcher
 
     getContextPath(): string
+
+    getRequestURI(): string
 }
 class RequestDispatcher {
     constructor(
@@ -71,7 +71,6 @@ export const applyHttpRequest = (url: URL) => async (req: IncomingMessage): Prom
                 return data
             },
         },
-        requestURL: url,
         getRequestDispatcher(ref: string) {
             const [viewPath, name] = ref.split('#')
             const targetPath = path.resolve(__dirname, '..', '..', 'view', viewPath)
@@ -89,6 +88,9 @@ export const applyHttpRequest = (url: URL) => async (req: IncomingMessage): Prom
         },
         getContextPath(): string {
             return '' // context設定も使う場合は再実装
+        },
+        getRequestURI(): string {
+            return url.pathname
         }
     })
 }
