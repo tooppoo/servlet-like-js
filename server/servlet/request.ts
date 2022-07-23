@@ -41,11 +41,7 @@ class RequestDispatcher {
 
 export const applyHttpRequest = (url: URL) => async (req: IncomingMessage): Promise<HttpRequest> => {
     const data = await new Promise<{ [key: string]: string }>((resolve) => {
-        if (
-            !(req.method === 'POST'
-            || req.method === 'PUT'
-            || req.method === 'PATCH')
-        ) {
+        if (['POST', 'PUT', 'PATCH'].every(m => m !== req.method)) {
             resolve({})
 
             return
