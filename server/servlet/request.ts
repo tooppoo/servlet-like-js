@@ -73,7 +73,13 @@ export const applyHttpRequest = (url: URL) => async (req: IncomingMessage): Prom
         },
         getRequestDispatcher(ref: string) {
             const [viewPath, name] = ref.split('#')
-            const targetPath = path.resolve(__dirname, '..', '..', 'view', viewPath)
+            const targetPath = path.resolve(
+                __dirname,
+                '..',
+                '..',
+                'view',
+                viewPath.replace(/^\//, '')
+            )
 
             return new RequestDispatcher(import(targetPath), name)
         },
