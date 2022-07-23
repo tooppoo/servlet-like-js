@@ -5,6 +5,7 @@ import { DOMParser } from 'xmldom'
 
 import {BaseError} from "./error";
 import {HttpServlet} from "./http-servlet";
+import {ServletClassLoader} from "@servlet/class-loader";
 
 export interface WebXml {
     servletDom: ServletDom[]
@@ -39,10 +40,10 @@ class ServletDom {
 
     get servletClass(): Promise<HttpServlet> {
         const [relativePath, key] = this._servletClass.split('#')
-        const root = path.resolve(__dirname, '..', '..', 'app')
-        const searchPath = path.resolve(root, relativePath)
 
-        return import(searchPath).then(mod => new mod[key]())
+        return ServletClassLoader.app
+            .load(relativePath, key)
+            .then(dc => dc.newInstance<HttpServlet>())
     }
 }
 class ServletMappingDom {
