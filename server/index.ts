@@ -34,19 +34,17 @@ async function main() {
 }
 
 function handleError(error: Error, res: ServerResponse) {
+    console.error(JSON.stringify(error, null, 2))
+
     const statusCode = error instanceof ServletError
         ? error.statusCode
         : 500
 
     res.writeHead(statusCode)
     res.end(`
-            <h1>${statusCode} ${error.message}</h1>
-            <h2>Stack Trace</h2>
+            <h1>${statusCode} ${error.name}</h1>
             <div>
-            ${
-        (error.stack || '')
-            .replace(/\n/g, '<br/>')
-    }
+            ${(error.stack || '').replace(/\n/g, '<br/>')}
             </div>
         `)
 }

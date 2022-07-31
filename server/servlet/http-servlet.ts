@@ -1,6 +1,7 @@
 import {errorFromRequest, NotFound} from "./error";
 import {HttpRequest} from "@servlet/request";
 import {HttpResponse} from "@servlet/response";
+import {ClassLoader} from "@util/class-loader";
 
 export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
@@ -33,6 +34,14 @@ export abstract class HttpServlet {
     }
     protected async doDelete(req: HttpRequest, res: HttpResponse): Promise<void> {
         throw errorFromRequest(req, NotFound)
+    }
+
+    protected getClass() {
+        return {
+            getClassLoader(): ClassLoader {
+                return new ClassLoader()
+            }
+        }
     }
 }
 

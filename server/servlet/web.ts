@@ -39,11 +39,9 @@ class ServletDom {
     }
 
     get servletClass(): Promise<HttpServlet> {
-        const [relativePath, key] = this._servletClass.split('#')
-
         return ServletClassLoader.app
-            .load(relativePath, key)
-            .then(dc => dc.newInstance<HttpServlet>())
+            .load(this._servletClass)
+            .then(dc => dc.getDeclaredConstructor().newInstance<HttpServlet>())
     }
 }
 class ServletMappingDom {
