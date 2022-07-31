@@ -41,8 +41,8 @@ export class ClassLoader {
     }
 
     async load(targetPath: string): Promise<MetaClass> {
-        const [modPath, name] = targetPath.split('#')
-        const mod = await import(path.resolve(this.root, modPath))
+        const [modPath, name] = tailAndRest(targetPath.split('.'))
+        const mod = await import(path.resolve(this.root, ...modPath))
         const klass = mod[name]
 
         if (klass !== undefined) {
@@ -68,4 +68,10 @@ export class ClassLoader {
             )
         })
     }
+}
+
+const tailAndRest = <T>(xs: T[]): [T[], T] => {
+    const [last, ...restRev] = xs.reverse()
+
+    return [restRev.reverse(), last]
 }
