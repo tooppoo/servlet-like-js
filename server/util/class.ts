@@ -1,6 +1,7 @@
 import * as path from "path";
 import fs from 'fs'
 import {tailAndRest} from "@util/array";
+import { root } from "server/root";
 
 export class Class {
     private static get loader() {
@@ -37,7 +38,7 @@ export class MetaClass {
 export class ClassLoader {
     async load(targetPath: string): Promise<MetaClass> {
         const [modPath, name] = tailAndRest(targetPath.split('.'))
-        const mod = await import(path.resolve(this.root, ...modPath))
+        const mod = await import(path.resolve(root, ...modPath))
         const klass = mod[name]
 
         if (klass !== undefined) {
@@ -51,7 +52,7 @@ export class ClassLoader {
     getResourceAsStream(targetPath: string): Promise<string[]> {
         return new Promise((res, rej) => {
             fs.readFile(
-                path.resolve(this.root, targetPath),
+                path.resolve(root, targetPath),
                 { encoding: 'utf-8' },
                 (err, data) => {
                     if (err) {
@@ -62,10 +63,6 @@ export class ClassLoader {
                 }
             )
         })
-    }
-
-    private get root(): string {
-        return path.resolve(__dirname, '..', '..')
     }
 }
 
