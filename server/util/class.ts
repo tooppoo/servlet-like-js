@@ -1,5 +1,6 @@
 import * as path from "path";
 import fs from 'fs'
+import {tailAndRest} from "@util/array";
 
 export class Class {
     private static get loader() {
@@ -68,8 +69,3 @@ export class ClassLoader {
     }
 }
 
-const tailAndRest = <T>(xs: T[]): [T[], T] => {
-    const [last, ...restRev] = xs.reverse()
-
-    return [restRev.reverse(), last]
-}
