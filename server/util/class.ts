@@ -1,6 +1,38 @@
 import * as path from "path";
 import fs from 'fs'
 
+export class Class {
+    private static get loader() {
+        return new ClassLoader()
+    }
+    static forName(name: string): Promise<MetaClass> {
+        return this.loader.load(name)
+    }
+
+    getClassLoader(): ClassLoader {
+        return Class.loader
+    }
+}
+
+type Constructor = new (...args: any[]) => any
+class DeclaredConstructor {
+    constructor(private readonly c: Constructor) {
+    }
+
+    newInstance<Klass>(...args: unknown[]): Klass {
+        return new this.c(...args)
+    }
+}
+
+export class MetaClass {
+    constructor(private readonly cons: Constructor) {
+    }
+
+    getDeclaredConstructor(): DeclaredConstructor {
+        return new DeclaredConstructor(this.cons)
+    }
+}
+
 export class ClassLoader {
     private readonly root: string
 
@@ -35,28 +67,5 @@ export class ClassLoader {
                 }
             )
         })
-    }
-}
-
-export class Class {
-    private static readonly loader = new ClassLoader()
-
-    static forName(name: string): Promise<MetaClass> {
-        return this.loader.load(name)
-    }
-}
-
-type Constructor = new (...args: any[]) => any
-class DeclaredConstructor {
-    constructor(private readonly c: Constructor) {}
-    newInstance<Klass>(...args: unknown[]): Klass {
-        return new this.c(...args)
-    }
-}
-class MetaClass {
-    constructor(private readonly cons: Constructor) {}
-
-    getDeclaredConstructor(): DeclaredConstructor {
-        return new DeclaredConstructor(this.cons)
     }
 }

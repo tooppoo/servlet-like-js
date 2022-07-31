@@ -1,7 +1,7 @@
 import {errorFromRequest, NotFound} from "./error";
 import {HttpRequest} from "@servlet/request";
 import {HttpResponse} from "@servlet/response";
-import {ClassLoader} from "@util/class-loader";
+import {Class} from "@util/class";
 
 export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
@@ -37,11 +37,7 @@ export abstract class HttpServlet {
     }
 
     protected getClass() {
-        return {
-            getClassLoader(): ClassLoader {
-                return new ClassLoader()
-            }
-        }
+        return new Class()
     }
 }
 
