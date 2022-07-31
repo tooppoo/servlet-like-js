@@ -22,7 +22,7 @@ export class ServletError extends BaseError {
     constructor(message?: string, cause?: Error | unknown) {
         super();
 
-        const stringifyError = (detail: Error) => `caused by ${detail.message}`
+        const stringifyError = (detail: Error) => `${message} caused by ${detail.message}`
 
         this.message = branch
             .if<string>(cause === undefined, () => stringifyError(this))
