@@ -1,7 +1,7 @@
 import * as path from "path";
 import fs from 'fs'
 import {tailAndRest} from "@util/array";
-import { root } from "server/root";
+import {encode, root} from "server/const";
 
 export class Class {
     private static get loader() {
@@ -53,7 +53,7 @@ export class ClassLoader {
         return new Promise((res, rej) => {
             fs.readFile(
                 path.resolve(root, targetPath),
-                { encoding: 'utf-8' },
+                { encoding: encode },
                 (err, data) => {
                     if (err) {
                         return rej(err)

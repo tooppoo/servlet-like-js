@@ -4,9 +4,10 @@ import { readWebXml } from "@servlet/web"
 import {buildUrlFromRequest} from "@servlet/url";
 import {Router} from "@servlet/router";
 import {ServletError} from "@servlet/error";
+import {encode} from "./const";
 
 const port = 9090
-const enc = 'utf-8'
+const enc = encode
 const urlFromRequest = buildUrlFromRequest('http')
 
 async function main() {

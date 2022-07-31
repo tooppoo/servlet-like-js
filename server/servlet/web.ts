@@ -6,6 +6,7 @@ import { DOMParser } from 'xmldom'
 import {BaseError} from "./error";
 import {HttpServlet} from "./http-servlet";
 import {ClassLoader} from "@util/class";
+import {encode} from "../const";
 
 export interface WebXml {
     servletDom: ServletDom[]
@@ -15,7 +16,7 @@ export async function readWebXml(): Promise<WebXml> {
     const configPath = path.resolve(__dirname, '..', '..', 'config')
 
     const buf = await readFile(path.resolve(configPath, 'web.xml'))
-    const xml = buf.toString('utf-8')
+    const xml = buf.toString(encode)
 
     const doc = new DOMParser().parseFromString(xml)
 
