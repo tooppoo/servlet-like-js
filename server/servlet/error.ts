@@ -1,4 +1,5 @@
 import { IncomingMessage } from "http";
+import { branch } from "ceiocs"
 
 export class BaseError extends Error {
     constructor(message?: string) {
@@ -15,11 +16,18 @@ export class BaseError extends Error {
     }
 }
 
-export abstract class ServletError extends BaseError {
-    abstract readonly statusCode: number
+export class ServletError extends BaseError {
+    readonly statusCode: number = 500
 
-    constructor(message?: string) {
-        super(message);
+    constructor(message?: string, cause?: Error | unknown) {
+        super();
+
+        const stringifyError = (detail: Error) => `caused by ${detail.message}`
+
+        this.message = branch
+            .if<string>(cause === undefined, () => stringifyError(this))
+            .elseif(cause instanceof Error, () => stringifyError(cause as Error))
+            .else(`caused by ${JSON.stringify(cause)}`)
     }
 }
 
