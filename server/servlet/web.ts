@@ -5,7 +5,7 @@ import { DOMParser } from 'xmldom'
 
 import {BaseError} from "./error";
 import {HttpServlet} from "./http-servlet";
-import {ServletClassLoader} from "@servlet/class-loader";
+import {ClassLoader} from "@util/class";
 
 export interface WebXml {
     servletDom: ServletDom[]
@@ -30,6 +30,8 @@ export async function readWebXml(): Promise<WebXml> {
 }
 
 class ServletDom {
+    private static classLoader = new ClassLoader()
+
     public readonly servletName: string
     private readonly _servletClass: string
 
@@ -39,7 +41,7 @@ class ServletDom {
     }
 
     get servletClass(): Promise<HttpServlet> {
-        return ServletClassLoader.app
+        return ServletDom.classLoader
             .load(this._servletClass)
             .then(dc => dc.getDeclaredConstructor().newInstance<HttpServlet>())
     }

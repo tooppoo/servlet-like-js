@@ -34,12 +34,6 @@ export class MetaClass {
 }
 
 export class ClassLoader {
-    private readonly root: string
-
-    constructor(root?: string) {
-        this.root = root || path.resolve(__dirname, '..', '..')
-    }
-
     async load(targetPath: string): Promise<MetaClass> {
         const [modPath, name] = tailAndRest(targetPath.split('.'))
         const mod = await import(path.resolve(this.root, ...modPath))
@@ -67,6 +61,10 @@ export class ClassLoader {
                 }
             )
         })
+    }
+
+    private get root(): string {
+        return path.resolve(__dirname, '..', '..')
     }
 }
 
