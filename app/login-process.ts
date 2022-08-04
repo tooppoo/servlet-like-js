@@ -12,15 +12,15 @@ export class LoginProcessServlet extends HttpServlet {
 
         if (loginId === null || loginId.length === 0) {
             req.setAttribute('errorMessage', 'ログインIDは必須です')
-            return await req.getRequestDispatcher('login.ts#login').forward(req, res)
+            return await req.getRequestDispatcher('/login').forward(req, res)
         }
         if (password === null || password.length === 0) {
             req.setAttribute('errorMessage', 'パスワードは必須です')
-            return await req.getRequestDispatcher('login.ts#login').forward(req, res)
+            return await req.getRequestDispatcher('/login').forward(req, res)
         }
         if (loginId !== 'user1' || password !== 'password') {
             req.setAttribute('errorMessage', 'ユーザーIDまたはパスワードが一致しません')
-            return await req.getRequestDispatcher('login.ts#login').forward(req, res)
+            return await req.getRequestDispatcher('/login').forward(req, res)
         }
 
         res.sendRedirect(req.getContextPath() + '/list')

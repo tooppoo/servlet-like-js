@@ -14,6 +14,6 @@ export class ListDisplayServlet extends HttpServlet {
         ]
 
         req.setAttribute('todoList', todoList)
-        return req.getRequestDispatcher('list.ts#list').forward(req, res)
+        return req.getRequestDispatcher('/list').forward(req, res)
     }
 }

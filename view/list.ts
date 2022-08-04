@@ -4,7 +4,7 @@ import {Todo} from "@app/list-display";
 interface ListAttr {
     todoList: Todo[]
 }
-export const list: Renderer<ListAttr> = attr => `
+const list: Renderer<ListAttr> = attr => `
 <h1>TODOリスト</h1>
 <ul>
     ${attr.todoList.map(todo)}
@@ -16,3 +16,4 @@ const todo = (todo: Todo) => `
     <div>${todo.comment}</div>
 </li>
 `
+export default list

@@ -4,7 +4,7 @@ interface LoginAttr {
     errorMessage?: string
 }
 
-export const login: Renderer<LoginAttr> = attr => `
+const login: Renderer<LoginAttr> = attr => `
 <h1>Login</h1>
 <div class="error">
     ${attr.errorMessage || ''}
@@ -21,3 +21,4 @@ export const login: Renderer<LoginAttr> = attr => `
     </div>
 </form>
 `
+export default login
