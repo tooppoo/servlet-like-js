@@ -13,9 +13,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/minimatch": "^3.0.5",
-    "@types/node": "^18.0.6",
-    "@types/xmldom": "^0.1.31",
+    "@types/minimatch": "3.0.5",
+    "@types/node": "18.0.6",
+    "@types/xmldom": "0.1.31",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.0.0",
